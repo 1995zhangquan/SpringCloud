@@ -21,6 +21,8 @@
     <modules>
         <module>EurekaServer</module>
         <module>EurekaClient</module>
+        <module>NacosServer</module>
+        <module>NacosClient</module>
     </modules>
     
     <properties>
@@ -33,9 +35,12 @@
         <spring-boot.version>2.6.13</spring-boot.version>
         <!--2025版需要引入负载均衡依赖-->
         <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
     </properties>
     
     <dependencies>
+        
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -53,6 +58,9 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        
+        
+        
     </dependencies>
     
     <dependencyManagement>
@@ -62,6 +70,15 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!-- Alibaba Cloud依赖版本管理 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
