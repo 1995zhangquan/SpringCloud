@@ -1,0 +1,26 @@
+server:
+  port: 8181
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eurekaServer.serverHost}:${eurekaServer.serverPort}/eureka/
+
+
+
+eurekaServer:
+  serverHost: localhost
+  serverPort: 8180
+
+spring:
+  application:
+    name: eureka-server-81
+  cloud:
+    inetutils:
+      timeout-seconds: 10
+  security:
+    user:
+      name: admin
+      password: 123456

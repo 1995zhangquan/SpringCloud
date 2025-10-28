@@ -1,0 +1,19 @@
+server:
+  port: 8180
+
+eureka:
+  client:
+    fetch-registry: false  #表示当前服务不会拉取其他服务
+    register-with-eureka: false  # 配置Eureka客户端不向注册中心注册自身服务
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+  instance:
+    hostname: localhost
+
+
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+
