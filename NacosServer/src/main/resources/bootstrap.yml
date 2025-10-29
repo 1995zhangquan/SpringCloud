@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: nacos-server  # 应用名称，同时也是配置的 dataId 前缀
+  cloud:
+    nacos:
+      config:
+        server-addr: ${nacosCenter.hostName}:${nacosCenter.hostPort}  # Nacos 服务器地址
+        username: nacos
+        password: nacos
+        group: NACOS_SERVER  # 配置分组
+        file-extension: yaml  # 配置格式，支持 properties、yaml 等
+        namespace: # 可选，配置命名空间 ID
+
+nacosCenter:
+  hostName: localhost
+  hostPort: 8848

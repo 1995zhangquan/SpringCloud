@@ -2,12 +2,18 @@ package com.cloud.nacosserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.ComponentScan;
+
 
 /**
- * Nacos Server Application
+ * nacos 集群
+ * 1.nacos startup.com 修改单机-集群
+ * 2.复制cluster.conf.example为cluster.conf，修改里面的集群端口号
+ * 3.复制nacos文件夹，分别修改应对的application.properties的8848
+ * nacos nacos2.x版本会默认占用四个端口，【尽量让端口差距大一些】，【控制台端口也要改】，同时修改对应的【cluster.conf】
+ *      8828 对应浏览器可视化界面 8822
+ *      8848            8842
+ *      8868            8862
  */
 //实现服务注册
 @EnableDiscoveryClient
