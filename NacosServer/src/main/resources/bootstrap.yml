@@ -18,7 +18,8 @@ spring:
         server-addr: ${nacosCenter.hostName}:${nacosCenter.hostPort}
         file-extension: yaml
         enabled: true
-        namespace:
+        namespace: #指定配置文件所在的命名空间，若不配置，默认是Ncos 保留的命名空间 public
+        group: DEFAULT_GROUP #不同的分组可以存在DataId 相同的配置文件
   security:
     user:
       name: admin

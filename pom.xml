@@ -23,6 +23,7 @@
         <module>EurekaClient</module>
         <module>NacosServer</module>
         <module>NacosClient</module>
+        <module>NacosGateWary</module>
     </modules>
     
     <properties>
