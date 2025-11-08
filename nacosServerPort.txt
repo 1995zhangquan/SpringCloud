@@ -1,0 +1,78 @@
+
+
+nacos网关地址
+    192.168.10.66 8910
+
+提供者
+    user-api:
+    192.168.10.66 8911
+    order-api:
+    192.168.10.66 8912
+
+
+
+
+
+nacos server
+    192.168.10.66 8814
+    192.168.10.66 8836
+    192.168.10.66 8853
+
+nacos console
+    192.168.10.66 8824
+    192.168.10.66 8846
+    192.168.10.66 8863
+
+
+
+
+--nginx配置
+http{
+    upstream nacos_server {
+        server 192.168.10.66:8814 weight=2;
+        server 192.168.10.66:8836 weight=2;
+        server 192.168.10.66:8853 weight=2;
+    }
+
+
+    server {
+        listen       8848;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+          location / {
+                    proxy_pass http://nacos_server;
+                    proxy_set_header Host $host;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto $scheme;
+          }
+          location /console/ {  #注意这里
+                 proxy_pass http://nacos_console/;
+                 proxy_set_header Host $host;
+                 proxy_set_header X-Real-IP $remote_addr;
+                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                 proxy_set_header X-Forwarded-Proto $scheme;
+          }
+
+          location /console {
+            return 302 /console/;
+         }
+    }
+}
+
+
+
+nacos配置中心
+    1.pom里添加：spring-cloud-starter-bootstrap
+    2.dataid命名别忘了带上.yaml后缀
+    3.bootsstrap.yml优先于application.yml
+    ${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}）
+nacos 集群
+    1.nacos startup.com 修改单机-集群
+    2.复制cluster.conf.example为cluster.conf，修改里面的集群端口号
+    3.复制nacos文件夹，分别修改应对的application.properties的8848
+    4.nacos nacos2.x版本会默认占用四个端口，【尽量让端口差距大一些】，【控制台端口也要改】，同时修改对应的【cluster.conf】

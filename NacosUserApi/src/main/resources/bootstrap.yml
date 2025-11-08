@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: 192.168.10.66:8848
+      config:
+        file-extension: yaml #文件后缀
+        shared-configs: #共享配置
+          - data-id: share-mysql-connect.yaml

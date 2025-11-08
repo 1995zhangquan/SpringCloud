@@ -1,0 +1,9 @@
+server:
+  port: 8911
+
+spring:
+  application:
+    name: nacos-user-api
+
+  profiles:
+    active: dev

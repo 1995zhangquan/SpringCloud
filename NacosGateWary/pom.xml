@@ -34,7 +34,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.cloud.getwarycenter.NacosGateWaryApplication</mainClass>
+                    <mainClass>com.cloud.main.NacosGateWaryApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>

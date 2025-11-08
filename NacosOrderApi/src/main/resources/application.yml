@@ -1,0 +1,9 @@
+server:
+  port: 8912
+
+spring:
+  application:
+    name: nacos-order-api
+
+  profiles:
+    active: dev

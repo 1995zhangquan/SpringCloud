@@ -1,5 +1,5 @@
 server:
-  port: 8585
+  port: 8910
 spring:
   application:
     name: nacos-gateway
@@ -8,7 +8,11 @@ spring:
     gateway:
       enabled: true #如果引入了依赖但是不想该项目作为网关系统则可以添加配置spring.cloud.gateway.enabled=false则不会作为网关
       routes:
-        - id: nacos-provider
-          uri: lb://nacos-provider
+        - id: nacos-user-api
+          uri: lb://nacos-user-api
           predicates: #断言
-            - Path=/nacos-provider/**
+            - Path=/user/**
+        - id: nacos-order-api
+          uri: lb://nacos-order-api
+          predicates: #断言
+            - Path=/order/**
