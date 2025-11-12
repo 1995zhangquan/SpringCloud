@@ -76,3 +76,6 @@ nacos 集群
     2.复制cluster.conf.example为cluster.conf，修改里面的集群端口号
     3.复制nacos文件夹，分别修改应对的application.properties的8848
     4.nacos nacos2.x版本会默认占用四个端口，【尽量让端口差距大一些】，【控制台端口也要改】，同时修改对应的【cluster.conf】
+
+redis window下安装
+https://www.cnblogs.com/binbingg/p/17724934.html

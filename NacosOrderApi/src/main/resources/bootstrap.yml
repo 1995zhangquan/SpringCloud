@@ -1,8 +1,9 @@
 spring:
   cloud:
     nacos:
-      server-addr: 192.168.10.66:8848
+      server-addr: 192.168.1.83:8848
       config:
         file-extension: yaml #文件后缀
         shared-configs: #共享配置
           - data-id: share-mysql-connect.yaml
+          - data-id: share-redis-connect.yaml

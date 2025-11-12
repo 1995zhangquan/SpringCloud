@@ -16,7 +16,17 @@
     <description>NacosOrderApi</description>
 
     <dependencies>
-
+        
+        
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.cloud</groupId>
+            <artifactId>NacosOrderApi</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
