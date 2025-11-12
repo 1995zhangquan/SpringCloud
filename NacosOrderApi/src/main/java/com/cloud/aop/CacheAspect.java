@@ -2,7 +2,6 @@ package com.cloud.aop;
 
 import com.alibaba.fastjson.JSON;
 import com.cloud.util.RedisUtil;
-import com.cloud.model.ApiResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -65,19 +64,23 @@ public class CacheAspect {
             String redisValue = String.valueOf(redisUtil.get(redisKey));
             if (!"null".equals(redisValue) && StringUtils.isNotEmpty(redisValue)) {
                 //不为空返回数据
+                long expire1 = redisUtil.getExpire(redisKey);
+                log.info("redis缓存时间：{}s", expire1);
+
                 Class<?> returnType = method.getReturnType();
                 Object result = JSON.parseObject(redisValue, returnType);
                 log.info("数据从redis缓存中获取，key：{}", redisKey);
                 return result;
             }
             Object proceed = joinPoint.proceed();
-            redisUtil.set(redisKey, JSON.toJSONString(proceed), expire, TimeUnit.MILLISECONDS);
+            redisUtil.set(redisKey, JSON.toJSONString(proceed), expire, TimeUnit.MINUTES);
             log.info("数据存入redis缓存，key：{}", redisKey);
             return proceed;
         } catch (Throwable throwable) {
             throwable.printStackTrace();
+            // 当缓存切面发生异常时，直接执行原方法而不是返回ApiResult
+            return joinPoint.proceed();
         }
-        return ApiResult.fail(999, "系统错误");
     }
 
 }

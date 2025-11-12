@@ -33,13 +33,14 @@ public class RedisConfig {
         return template;
     }
 
-    @Bean
+    //为了注解形式使用 Spring 缓存功能，需要在项目中添加 spring-boot-starter-cache 依赖，并在配置类中配置缓存管理器。以下是配置缓存管理器的
+  /*  @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMillis(10)) //缓存有效期30秒
+                .entryTtl(Duration.ofMillis(30*1000)) //缓存有效期30秒
                 .disableCachingNullValues() // 不缓存null值
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
         return RedisCacheManager.builder(factory).cacheDefaults(config).build();
-    }
+    }*/
 }

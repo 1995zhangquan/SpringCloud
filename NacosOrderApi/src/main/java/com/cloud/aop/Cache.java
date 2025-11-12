@@ -6,8 +6,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Cache {
-    //过期时间，默认60s
-    long expire() default 60 * 1000;
+    //过期时间，默认5分钟，CacheAspect设置
+    long expire() default 5;
     //缓存名称
     String name() default "";
+
+
 }

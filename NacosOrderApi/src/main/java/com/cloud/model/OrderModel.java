@@ -24,7 +24,6 @@ public class OrderModel implements Serializable {
     @TableField("MEMO")
     private String memo;
     @TableField("USER_ID")
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long createBy;
     @TableField("USER_ID")
     private Date createTime;

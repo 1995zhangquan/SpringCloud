@@ -38,6 +38,8 @@ public class OrderCacheService {
     //@Cacheable(value = "cacheOrder", key ="#id" )
     @Cache(name = "getKey")
     public OrderModel getOrderById(Long id) {
+        long expire = redisUtil.getExpire("getKey::OrderCacheService::getOrderById");
+        log.info("redis缓存时间：{}", expire);
         return orderMapper.getOrderById(id);
     }
     //更新
