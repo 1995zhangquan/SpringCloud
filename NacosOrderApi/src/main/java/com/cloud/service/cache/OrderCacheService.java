@@ -6,6 +6,7 @@ import com.cloud.model.OrderModel;
 import com.cloud.util.RedisUtil;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,12 +35,12 @@ public class OrderCacheService {
     @Resource
     private RedisUtil redisUtil;
 
+
     //查询
     //@Cacheable(value = "cacheOrder", key ="#id" )
     @Cache(name = "getKey")
     public OrderModel getOrderById(Long id) {
-        long expire = redisUtil.getExpire("getKey::OrderCacheService::getOrderById");
-        log.info("redis缓存时间：{}", expire);
+        redisUtil.sendMessage(RedisUtil.CHANNEL_NAME_ORDER, "土豆土豆，我是地瓜," + id + "已进入缓存中");
         return orderMapper.getOrderById(id);
     }
     //更新

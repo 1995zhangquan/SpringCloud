@@ -13,6 +13,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
 
+    public static final String CHANNEL_NAME_ORDER = "CHANNEL_ORDER";
+    public static final String CHANNEL_NAME_PERMIT = "CHANNEL_ORDER_PERMIT";
+
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -653,5 +656,14 @@ public class RedisUtil {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public void sendMessage(String channel, Object message) {
+        redisTemplate.convertAndSend(channel, message);
+        //阻塞取值
+        // 发送消息：redisTemplate.opsForList().leftPush(channel, message);
+        //获取消息
+        redisTemplate.opsForList().rightPop(channel, 10, TimeUnit.SECONDS);
+
     }
 }

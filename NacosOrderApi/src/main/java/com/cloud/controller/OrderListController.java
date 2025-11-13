@@ -2,6 +2,7 @@ package com.cloud.controller;
 
 import com.cloud.service.OrderService;
 import com.cloud.service.cache.OrderCacheService;
+import com.cloud.util.RedisUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,8 @@ public class OrderListController {
     private OrderCacheService orderCacheService;
     @Resource
     private OrderService orderService;
+    @Resource
+    private RedisUtil redisUtil;
 
     @RequestMapping("searchList")
     public String searchList() {
@@ -24,5 +27,11 @@ public class OrderListController {
     public String searchOrderId() {
         long orderId = 4399L;
         return orderCacheService.getOrderById(orderId).getMemo();
+    }
+
+    @RequestMapping("getMessage")
+    public String getMessage() {
+        redisUtil.sendMessage(RedisUtil.CHANNEL_NAME_ORDER, "我主动发送消息");
+        return "消息已发送";
     }
 }
