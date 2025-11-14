@@ -13,8 +13,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
 
-    public static final String CHANNEL_NAME_ORDER = "CHANNEL_ORDER";
-    public static final String CHANNEL_NAME_PERMIT = "CHANNEL_ORDER_PERMIT";
 
     @Autowired
     private RedisTemplate redisTemplate;
