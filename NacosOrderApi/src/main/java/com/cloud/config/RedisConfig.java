@@ -1,8 +1,8 @@
 package com.cloud.config;
 
+import com.cloud.attr.RedisStatic;
 import com.cloud.message.PrintMessageReceiver;
 import com.cloud.message.RedisMessageListener;
-import com.cloud.util.RedisUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,8 +77,8 @@ public class RedisConfig {
         container.setConnectionFactory(connectionFactory);
         //所有的订阅消息，都需要在这里进行注册绑定,new PatternTopic(TOPIC_NAME1)表示发布的主题信息
         // 可以添加多个 messageListener，配置不同的通道
-        container.addMessageListener(listener, new PatternTopic(RedisUtil.CHANNEL_NAME_ORDER));
-        container.addMessageListener(adapter, new PatternTopic(RedisUtil.CHANNEL_NAME_PERMIT));
+        container.addMessageListener(listener, new PatternTopic(RedisStatic.CHANNEL_NAME_ORDER));
+        container.addMessageListener(adapter, new PatternTopic(RedisStatic.CHANNEL_NAME_PERMIT));
         /**
          * 设置序列化对象
          * 特别注意：1. 发布的时候需要设置序列化；订阅方也需要设置序列化
