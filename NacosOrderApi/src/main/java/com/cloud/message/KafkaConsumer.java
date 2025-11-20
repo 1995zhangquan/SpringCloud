@@ -1,7 +1,7 @@
 package com.cloud.message;
 
+import com.cloud.attr.KafkaStatic;
 import com.cloud.model.OrderModel;
-import com.cloud.util.StaticUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @Component
 public class KafkaConsumer {
 
-    @KafkaListener(topics = {StaticUtil.KAFKA_TOPIC_ORDER}/*groupId = "group_order"*/)
+    @KafkaListener(topics = {KafkaStatic.KAFKA_TOPIC_ORDER}/*groupId = "group_order"*/)
     public void getMessage(ConsumerRecord record, Acknowledgment ack,@Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         log.info("KafkaConsumer 监听到消息：{}-{}，message：{}", record.topic(), record.partition(), record.value());
         Optional<Object> message = Optional.ofNullable(record.value());
@@ -30,7 +30,7 @@ public class KafkaConsumer {
         }
     }
 
-    @KafkaListener(topics = {StaticUtil.KAFKA_TOPIC_ORDER}/*groupId = "group_permit"*/)
+    @KafkaListener(topics = {KafkaStatic.KAFKA_TOPIC_ORDER}/*groupId = "group_permit"*/)
     public void batch(List<ConsumerRecord<String, Object>>  records) {
         records.forEach(record -> {
             log.info("KafkaConsumer 监听到消息：{}-{}，message：{}", record.topic(), record.partition(), record.value());
@@ -38,7 +38,7 @@ public class KafkaConsumer {
     }
 
     @Transactional("kafkaTransactionManager")
-    @KafkaListener(topics = {StaticUtil.KAFKA_TOPIC_ORDER}/*groupId = "group_permit"*/)
+    @KafkaListener(topics = {KafkaStatic.KAFKA_TOPIC_ORDER}/*groupId = "group_permit"*/)
     public void consumePojo(OrderModel  orderModel) {
         //todosomething
     }
