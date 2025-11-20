@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface OrderMapper extends BaseMapper<OrderModel> {
+public interface OrderDao extends BaseMapper<OrderModel> {
 
 
     @Select("SELECT * FROM ORDER_MODEL")

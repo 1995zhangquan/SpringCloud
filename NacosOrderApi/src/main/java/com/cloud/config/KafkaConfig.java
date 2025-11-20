@@ -25,24 +25,6 @@ public class KafkaConfig {
     @Autowired
     private ProducerFactory<String, MessageModel> producerFactory;
 
-    @Bean
-    public KafkaTemplate<String, MessageModel> kafkaTemplate() {
-        KafkaTemplate<String, MessageModel> kafkaTemplate = new KafkaTemplate<String, MessageModel>(producerFactory);
-        kafkaTemplate.setProducerListener(new ProducerListener<String, MessageModel>() {
-            @Override
-            public void onSuccess(ProducerRecord<String, MessageModel> producerRecord, RecordMetadata recordMetadata) {
-                log.info("KafkaProducer 发送消息成功：{}", recordMetadata);
-            }
-
-            @Override
-            public void onError(ProducerRecord<String, MessageModel> producerRecord, RecordMetadata recordMetadata, Exception exception) {
-                log.info("KafkaProducer 订单消息发送失败：{}", exception.getMessage());
-                //重试
-                handleRetry(producerRecord, exception);
-            }
-        });
-        return kafkaTemplate;
-    }
 
     @Bean
     public NewTopic normalTopic() {
@@ -68,6 +50,26 @@ public class KafkaConfig {
         // 方案1: 简单重试几次
         // 方案2: 记录到数据库待重试表
         // 方案3: 发送到重试队列
+    }
+
+
+    @Bean
+    public KafkaTemplate<String, MessageModel> kafkaTemplate() {
+        KafkaTemplate<String, MessageModel> kafkaTemplate = new KafkaTemplate<String, MessageModel>(producerFactory);
+        kafkaTemplate.setProducerListener(new ProducerListener<String, MessageModel>() {
+            @Override
+            public void onSuccess(ProducerRecord<String, MessageModel> producerRecord, RecordMetadata recordMetadata) {
+                log.info("KafkaProducer 发送消息成功：{}", recordMetadata);
+            }
+
+            @Override
+            public void onError(ProducerRecord<String, MessageModel> producerRecord, RecordMetadata recordMetadata, Exception exception) {
+                log.info("KafkaProducer 订单消息发送失败：{}", exception.getMessage());
+                //重试
+                handleRetry(producerRecord, exception);
+            }
+        });
+        return kafkaTemplate;
     }
 
     /**

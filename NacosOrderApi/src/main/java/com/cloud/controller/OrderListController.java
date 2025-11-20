@@ -1,5 +1,6 @@
 package com.cloud.controller;
 
+import com.cloud.attr.RedisStatic;
 import com.cloud.service.OrderService;
 import com.cloud.service.cache.OrderCacheService;
 import com.cloud.util.RedisUtil;
@@ -31,7 +32,7 @@ public class OrderListController {
 
     @RequestMapping("getMessage")
     public String getMessage() {
-        redisUtil.sendMessage(RedisUtil.CHANNEL_NAME_ORDER, "我主动发送消息");
+        redisUtil.sendMessage(RedisStatic.CHANNEL_NAME_ORDER, "我主动发送消息");
         return "消息已发送";
     }
 }

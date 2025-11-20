@@ -1,15 +1,11 @@
 package com.cloud.service.cache;
 
 import com.cloud.aop.Cache;
-import com.cloud.dao.OrderMapper;
+import com.cloud.attr.RedisStatic;
+import com.cloud.dao.OrderDao;
 import com.cloud.model.OrderModel;
 import com.cloud.util.RedisUtil;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,7 +27,7 @@ import javax.annotation.Resource;
 public class OrderCacheService {
 
     @Resource
-    private OrderMapper orderMapper;
+    private OrderDao orderDao;
     @Resource
     private RedisUtil redisUtil;
 
@@ -40,13 +36,13 @@ public class OrderCacheService {
     //@Cacheable(value = "cacheOrder", key ="#id" )
     @Cache(name = "getKey")
     public OrderModel getOrderById(Long id) {
-        redisUtil.sendMessage(RedisUtil.CHANNEL_NAME_ORDER, "土豆土豆，我是地瓜," + id + "已进入缓存中");
-        return orderMapper.getOrderById(id);
+        redisUtil.sendMessage(RedisStatic.CHANNEL_NAME_ORDER, "土豆土豆，我是地瓜," + id + "已进入缓存中");
+        return orderDao.getOrderById(id);
     }
     //更新
     //@CachePut(value = "cacheOrder", key ="#orderModel.id")
     public OrderModel updateOrder(OrderModel orderModel) {
-        if (orderMapper.insert(orderModel) > 0) {
+        if (orderDao.insert(orderModel) > 0) {
             return orderModel;
         } else {
             return orderModel;
@@ -56,7 +52,7 @@ public class OrderCacheService {
     //删除
     //@CacheEvict(value = "cacheOrder", key ="#id")
     public boolean deleteOrder(Long id) {
-        return orderMapper.deleteById(id) > 0;
+        return orderDao.deleteById(id) > 0;
     }
 
 }

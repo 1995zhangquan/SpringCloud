@@ -1,6 +1,6 @@
 package com.cloud.service;
 
-import com.cloud.dao.OrderMapper;
+import com.cloud.dao.OrderDao;
 import com.cloud.model.OrderModel;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,14 @@ import java.util.List;
 public class OrderService {
 
     @Resource
-    private OrderMapper orderMapper;
+    private OrderDao orderDao;
 
     public List<OrderModel> getList() {
-        return orderMapper.getOrderList();
+        return orderDao.getOrderList();
     }
 
     public OrderModel getOrderById(Long id) {
-        return orderMapper.getOrderById(id);
+        return orderDao.getOrderById(id);
     }
 
 }
