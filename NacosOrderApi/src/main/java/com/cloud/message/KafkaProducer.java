@@ -98,7 +98,7 @@ public class KafkaProducer {
         if (null == messageModel.getCreateTime()) {
             messageModel.setCreateTime(new Date());
         }
-        String transactionalTopic = KafkaStatic.TRANSACTIONAL_TOPIC;
+        String transactionalTopic = KafkaStatic.TOPIC_TRANSACTIONAL;
         //记录消息发送的轨迹
         messageTraceRecordService.savePreSendRecord(messageModel, transactionalTopic);
 

@@ -91,4 +91,5 @@ mybatis-plus:
   type-aliases-package: com.cloud.model
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    auto-create_table: true #自动建表
     #map-underscore-to-camel-case: true #驼峰命名  user_name -> userName

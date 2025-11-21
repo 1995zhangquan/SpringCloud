@@ -35,7 +35,7 @@ public class MessageTraceRecordService {
             recordModel.setPartition(partition);
             recordModel.setOffset(offset);
             recordModel.setSendStatus(CommonStatic.MESSAGE_SEND_SUCCESS);
-            recordModel.setContent("消息发送成功，messageId:::::" + messageId);
+            recordModel.setSendContent("send:消息发送成功，messageId:::::" + messageId);
             recordModel.setUpdateTime(new Date());
             messageTraceRecordDao.updateById(recordModel);
         } else {
@@ -54,11 +54,41 @@ public class MessageTraceRecordService {
         if (null != recordModel) {
             recordModel.setTopic(topic);
             recordModel.setSendStatus(CommonStatic.MESSAGE_SEND_FAIL);
-            recordModel.setContent("消息发送失败，messageId:::::" + messageId + ",原因：" + errorMsg);
+            recordModel.setSendContent("send:消息发送失败，messageId:::::" + messageId + ",原因：" + errorMsg);
             recordModel.setUpdateTime(new Date());
             messageTraceRecordDao.updateById(recordModel);
         } else {
             log.error("保存发送失败消息记录失败，未找到对应的消息记录id:{}",messageId);
         }
     }
+
+    public void consumeSuccess(String messageId, String consumerTopic, String consumerGroup, int consumerPartition, long consumerOffset) {
+        MessageTraceRecordModel recordModel = messageTraceRecordDao.selectByMessageId(messageId);
+        if (null != recordModel) {
+            recordModel.setConsumeStatus(CommonStatic.MESSAGE_CONSUME_SUCCESS);
+            recordModel.setConsumeTime(new Date());
+            recordModel.setConsumeContent("consume:消息消费成功，messageId:::::" + messageId);
+            recordModel.setConsumerTopic(consumerTopic);
+            recordModel.setConsumerGroup(consumerGroup);
+            recordModel.setConsumerPartition(consumerPartition);
+            recordModel.setConsumerOffset(consumerOffset);
+            messageTraceRecordDao.updateById(recordModel);
+        } else {
+            log.error("消息消费失败，未找到对应的消息记录id:{}",messageId);
+        }
+    }
+
+    public void consumeFail(String messageId, String topic, String errorMsg) {
+        MessageTraceRecordModel recordModel = messageTraceRecordDao.selectByMessageId(messageId);
+        if (null != recordModel) {
+            recordModel.setConsumeStatus(CommonStatic.MESSAGE_CONSUME_FAIL);
+            recordModel.setConsumeTime(new Date());
+            recordModel.setConsumerTopic(topic);
+            recordModel.setConsumeContent("consume:消息消费失败，messageId:::::" + messageId + ",原因：" + errorMsg);
+            messageTraceRecordDao.updateById(recordModel);
+        } else {
+            log.error("消息消费失败，未找到对应的消息记录id:{}",messageId);
+        }
+    }
+
 }
