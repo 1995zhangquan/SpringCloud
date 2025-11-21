@@ -28,21 +28,21 @@ public class KafkaConfig {
 
     @Bean
     public NewTopic normalTopic() {
-        return new NewTopic(KafkaStatic.NORMAL_TOPIC, 3, (short) 1); // 3个分区，1个副本
+        return new NewTopic(KafkaStatic.TOPIC_NORML, 3, (short) 1); // 3个分区，1个副本
     }
 
     @Bean
     public NewTopic partitionTopic() {
-        return new NewTopic(KafkaStatic.PARTITION_TOPIC, 5, (short) 1); // 5个分区，1个副本
+        return new NewTopic(KafkaStatic.TOPIC_PARTITION, 5, (short) 1); // 5个分区，1个副本
     }
     @Bean
     public NewTopic transactionTopic() {
-        return new NewTopic(KafkaStatic.TRANSACTIONAL_TOPIC, 3, (short) 1); // 3个分区，1个副本
+        return new NewTopic(KafkaStatic.TOPIC_TRANSACTIONAL, 3, (short) 1); // 3个分区，1个副本
     }
 
     @Bean
     public NewTopic deadLetterTopic() {
-        return new NewTopic(KafkaStatic.DEAD_LETTER_TOPIC, 1, (short) 1);
+        return new NewTopic(KafkaStatic.TOPIC_DEAD_LETTER, 1, (short) 1);
     }
 
     private void handleRetry(ProducerRecord<String, MessageModel> producerRecord, Exception exception) {
@@ -50,6 +50,7 @@ public class KafkaConfig {
         // 方案1: 简单重试几次
         // 方案2: 记录到数据库待重试表
         // 方案3: 发送到重试队列
+        //方案4:发送到死信主题
     }
 
 

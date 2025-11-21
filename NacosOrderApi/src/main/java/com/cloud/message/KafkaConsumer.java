@@ -1,7 +1,6 @@
 package com.cloud.message;
 
 import com.cloud.attr.KafkaStatic;
-import com.cloud.model.OrderModel;
 import com.cloud.model.message.MessageModel;
 import com.cloud.service.message.MessageTraceRecordService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,13 +8,9 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
-import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -24,7 +19,7 @@ public class KafkaConsumer {
     @Autowired
     private MessageTraceRecordService messageTraceRecordService;
 
-    @KafkaListener(topics = {KafkaStatic.TOP_NORML}, groupId = KafkaStatic.GROUP_NORMAL_CONSUMER)
+    @KafkaListener(topics = {KafkaStatic.TOPIC_NORML}, groupId = KafkaStatic.GROUP_NORMAL_CONSUMER)
     public void consumeNormalMessage(ConsumerRecord<String, MessageModel> record, Acknowledgment ack, @Header("kafka_receivedTopic") String topic,
                            @Header("kafka_receivedPartitionId") int partition, @Header("kafka_offset") long offset) {
         MessageModel value = record.value();

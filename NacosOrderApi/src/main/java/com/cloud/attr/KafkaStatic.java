@@ -7,7 +7,7 @@ package com.cloud.attr;
 public class KafkaStatic {
 
     // kafka主题
-    public static final String TOP_NORML = "normal_topic"; //普通消息主题
+    public static final String TOPIC_NORML = "normal_topic"; //普通消息主题
     public static final String TOPIC_PARTITION = "partition_topic"; //分区消息主题
     public static final String TOPIC_TRANSACTIONAL = "transactional_topic"; //事务消息主题
     public static final String TOPIC_DEAD_LETTER = "dead_letter_topic"; //死信主题
