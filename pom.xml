@@ -12,7 +12,7 @@
     
     <groupId>com.cloud</groupId>
     <artifactId>SpringCloud</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>SpringCloud</name>
     <description>SpringCloud</description>
     

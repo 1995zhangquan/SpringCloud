@@ -13,12 +13,17 @@ jobs:
       - name: Check version change
         id: check_version
         run: |
-          OLD_VERSION=$(git show HEAD~1:pom.xml | grep -A 0 -B 0 "<version>" | head -1 | sed -e 's/.*<version>\(.*\)<\/version>.*/\1/')
-          NEW_VERSION=$(grep -A 0 -B 0 "<version>" pom.xml | head -1 | sed -e 's/.*<version>\(.*\)<\/version>.*/\1/')
+          OLD_VERSION=$(git show HEAD~1:pom.xml | grep -A 0 -B 0 "<version>" | head -1 | sed -e 's/.*<version>\(.*\)<\/version>.*/\1/' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          NEW_VERSION=$(grep -A 0 -B 0 "<version>" pom.xml | head -1 | sed -e 's/.*<version>\(.*\)<\/version>.*/\1/' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          echo "OLD_VERSION=$OLD_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION"
           if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
             echo "VERSION_CHANGED=true" >> $GITHUB_ENV
             echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
             echo "IMAGE_NAME=SpringCloud" >> $GITHUB_ENV
+            echo "Version changed from $OLD_VERSION to $NEW_VERSION"
+          else
+            echo "No version change detected"
           fi
 
       - name: Set up JDK 17
@@ -44,17 +49,25 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker images
         if: env.VERSION_CHANGED == 'true'
         run: |
-          mvn dockerfile:build dockerfile:push
+          # 为每个模块构建和推送 Docker 镜像
+          for module in "NacosOrderApi" "NacosUserApi" "NacosGateWary"; do
+            if [ -f "$module/Dockerfile" ] || [ -f "Dockerfile" ]; then
+              echo "Building and pushing image for $module"
+              cd $module
+              mvn dockerfile:build dockerfile:push -Ddockerfile.tag=${{ env.VERSION }} -Ddockerfile.repository=${{ secrets.DOCKER_USERNAME }}/$module
+              cd ..
+            else
+              echo "Skipping $module - no Dockerfile found"
+            fi
+          done
           
-      - name: Deploy to server
+      - name: Deployment information
         if: env.VERSION_CHANGED == 'true'
         run: |
-          echo "Deployment would happen here"
-          echo "Image pushed to: ${{ secrets.DOCKER_USERNAME }}/${IMAGE_NAME}:${{ env.VERSION }}"
-          # 在实际环境中，您需要配置 SSH 密钥并添加类似下面的命令：
-          # ssh user@your-server "docker pull ${{ secrets.DOCKER_USERNAME }}/${IMAGE_NAME}:${{ env.VERSION }} && \
-          # docker stop app-container && \
-          # docker run --name app-container -d ${{ secrets.DOCKER_USERNAME }}/${IMAGE_NAME}:${{ env.VERSION }}"
+          echo "Images successfully pushed to Docker Hub:"
+          echo "- ${{ secrets.DOCKER_USERNAME }}/NacosOrderApi:${{ env.VERSION }}"
+          echo "- ${{ secrets.DOCKER_USERNAME }}/NacosUserApi:${{ env.VERSION }}"
+          echo "- ${{ secrets.DOCKER_USERNAME }}/NacosGateWary:${{ env.VERSION }}"
