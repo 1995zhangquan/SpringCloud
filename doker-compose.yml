@@ -17,7 +17,7 @@ services:
       MYSQL_ROOT_HOST: '%' # 允许远程连接
     ports:
       - "3306:3306"
-    volumes:
+    volumes: #加载本地目录下的配置文件到容器目标地址下
       - mysql_data:/var/lib/mysql # 挂载 mysql_data 卷到 /var/lib/mysql 实现数据持久化
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql # 挂载本地 init.sql 文件到容器初始化目录，用于数据库初始化
 
