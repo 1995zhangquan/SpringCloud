@@ -53,6 +53,7 @@ jobs:
         if: env.VERSION_CHANGED == 'true'
         run: |
           echo "Deployment would happen here"
+          echo "Image pushed to: ${{ secrets.DOCKER_USERNAME }}/${IMAGE_NAME}:${{ env.VERSION }}"
           # 在实际环境中，您需要配置 SSH 密钥并添加类似下面的命令：
           # ssh user@your-server "docker pull ${{ secrets.DOCKER_USERNAME }}/${IMAGE_NAME}:${{ env.VERSION }} && \
           # docker stop app-container && \
